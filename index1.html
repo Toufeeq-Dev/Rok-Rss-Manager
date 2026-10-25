@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RoK Resource Manager</title>
+<style>
+:root{--bg:#101b16;--panel:#172820;--panel2:#20382b;--line:#365442;--text:#f5f4df;--muted:#b7c8b6;--gold:#d8b65b;--gold2:#f0d98b;--green:#82b58a;--red:#e58a79;--shadow:0 12px 30px #0002}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top right,#294936 0,#14241b 42%,var(--bg) 80%);color:var(--text);font:15px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+header{max-width:1180px;margin:auto;padding:26px 18px 18px}.brand{display:flex;align-items:center;gap:13px}.crest{width:48px;height:48px;border-radius:15px;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1b291c;display:grid;place-items:center;font-size:25px;box-shadow:0 6px 18px #d8b65b25}h1{font-size:clamp(25px,5vw,36px);margin:0;letter-spacing:-.04em}.subtitle{color:var(--muted);margin-top:4px}.phase{display:inline-block;color:var(--gold2);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;margin-top:10px}
+main{max-width:1180px;margin:auto;padding:0 18px 42px}.panel{background:linear-gradient(145deg,#1a2b21f5,#14231bf5);border:1px solid var(--line);border-radius:18px;padding:17px;box-shadow:var(--shadow);margin-top:15px}.toolbar{display:grid;grid-template-columns:minmax(160px,1fr) minmax(150px,1fr) auto;gap:11px;align-items:end}.field{display:flex;flex-direction:column;gap:6px;min-width:0}label{font-size:11px;letter-spacing:.09em;color:var(--muted);font-weight:800}input,select{width:100%;min-width:0;background:#101e16;border:1px solid #3b5a45;color:var(--text);border-radius:10px;padding:11px 12px;font:inherit;outline:none}input:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 3px #d8b65b20}button{font:700 13px system-ui;cursor:pointer;border:1px solid transparent;border-radius:10px;padding:11px 14px;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1c2a1e;transition:transform .15s,filter .15s}button:hover{filter:brightness(1.05);transform:translateY(-1px)}button.secondary{background:#20382b;color:var(--text);border-color:#46644d}button.danger{background:#442a26;color:#ffdcd2;border-color:#805044}button.small{font-size:12px;padding:7px 9px}.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-top:15px}.metric{background:linear-gradient(145deg,#213a2b,#17291f);border:1px solid #3b5b43;border-radius:15px;padding:14px;min-width:0}.metric .kicker{font-size:11px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}.metric .number{font-size:clamp(19px,3vw,26px);font-weight:800;letter-spacing:-.04em;overflow-wrap:anywhere;margin-top:5px}.metric .unit{font-size:11px;color:var(--gold2);margin-top:2px}.head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:13px}h2{font-size:18px;margin:0;letter-spacing:-.02em}.section-note{font-size:12px;color:var(--muted);margin-top:5px}.table-wrap{overflow:auto;border:1px solid #2f4a39;border-radius:12px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{text-align:left;padding:12px 11px;border-bottom:1px solid #2b4434;white-space:nowrap}th{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);background:#203529}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:#ffffff06}.charname{font-weight:750}.tag{display:inline-flex;align-items:center;gap:5px;border:1px solid #47654b;color:var(--gold2);background:#263d2c;border-radius:30px;padding:4px 8px;font-size:11px}.actions{display:flex;gap:6px}.empty{padding:27px 14px;text-align:center;color:var(--muted)}.rss-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.rss{border:1px solid #3b5a45;background:#1d3225;border-radius:13px;padding:13px}.rss-top{display:flex;justify-content:space-between;align-items:center;gap:6px;color:var(--muted);font-size:12px}.resource-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);margin-right:6px}.rss strong{display:block;font-size:20px;margin-top:7px;overflow-wrap:anywhere}.note{font-size:12px;color:var(--muted);margin-top:12px}.status{font-size:11px;color:var(--green)}.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}.dialog{width:min(560px,calc(100% - 22px));border:1px solid #4c6a50;border-radius:18px;background:#17291f;color:var(--text);padding:20px;box-shadow:0 20px 80px #0007}.dialog::backdrop{background:#050c08bb;backdrop-filter:blur(4px)}.dialog-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.wide{grid-column:1/-1}.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:17px}.form-title{margin:0 0 15px}.small-help{font-size:11px;color:var(--muted);margin-top:5px}
+@media(max-width:700px){header{padding:21px 13px 14px}main{padding:0 13px 30px}.toolbar{grid-template-columns:1fr 1fr}.toolbar .field:first-child{grid-column:1/-1}.toolbar button{grid-column:1/-1}.summary{grid-template-columns:repeat(2,minmax(0,1fr))}.split{grid-template-columns:1fr}.panel{padding:13px}.rss-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.dialog-grid{grid-template-columns:1fr}.wide{grid-column:auto}.brand{align-items:flex-start}.crest{flex-shrink:0}}
+
+.login-screen{max-width:460px;margin:7vh auto 30px;padding:0 16px}.login-card{background:linear-gradient(145deg,#1a2b21f5,#14231bf5);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:var(--shadow)}.login-card h1{font-size:27px;margin-bottom:6px}.login-card p{color:var(--muted);font-size:13px}.login-tabs{display:flex;gap:8px;margin:18px 0}.login-tabs button{flex:1}.login-tabs button.active{outline:2px solid var(--gold2)}.login-fields{display:grid;gap:12px}.login-msg{font-size:12px;min-height:18px;color:var(--gold2);margin-top:10px}.login-note{border-top:1px solid var(--line);margin-top:18px;padding-top:12px;color:var(--muted);font-size:11px}.account-bar{display:flex;justify-content:flex-end;align-items:center;gap:10px;max-width:1180px;margin:auto;padding:0 18px;color:var(--muted);font-size:12px}body:not(.logged-in) header,body:not(.logged-in) main,body:not(.logged-in) .account-bar{display:none!important}body.logged-in .login-screen{display:none}
+@media(max-width:500px){.login-card{padding:18px}.login-card h1{font-size:24px}}
+</style>
+</head>
+<body>
+<section class="login-screen" id="loginScreen">
+ <div class="login-card">
+  <div class="brand" style="margin-bottom:16px"><div class="crest">♜</div><div><h1>RoK Resource Manager</h1><div class="subtitle">Green & Gold Edition</div></div></div>
+  <h2 id="authTitle">Login</h2><p id="authSubtitle">Sign in to open your own saved kingdoms and characters.</p>
+  <div class="login-tabs"><button type="button" class="active" id="showLoginBtn">Login</button><button type="button" class="secondary" id="showRegisterBtn">Create Fellow Account</button></div>
+  <form id="authForm" class="login-fields">
+   <div class="field"><label for="authUsername">USERNAME</label><input id="authUsername" autocomplete="username" required maxlength="30" placeholder="Enter username"></div>
+   <div class="field"><label for="authPassword">PASSWORD</label><input id="authPassword" type="password" autocomplete="current-password" required minlength="4" placeholder="Enter password"></div>
+   <div class="field" id="confirmPasswordField" hidden><label for="authConfirmPassword">CONFIRM PASSWORD</label><input id="authConfirmPassword" type="password" autocomplete="new-password" minlength="4" placeholder="Repeat password"></div>
+   <button type="submit" id="authSubmitBtn">Login</button>
+  </form>
+  <div class="login-msg" id="authMessage" role="status"></div>
+  <div class="login-note">Admin login: <strong>admin</strong> / <strong>12345</strong>. Fellow accounts are stored locally in this browser only. This is a convenience login, not strong security; do not use a valuable password.</div>
+ </div>
+</section>
+<header>
+ <div class="brand"><div class="crest">♜</div><div><h1>RoK Resource Manager</h1><div class="subtitle">Your kingdoms. Your characters. Your resources.</div><div class="phase">Kingdom Dashboard · Per-character Tax & Storehouse</div></div></div>
+</header>
+<div class="account-bar"><span id="signedInLabel"></span><button class="secondary small" id="logoutBtn">Log out</button></div>
+<main>
+ <section class="panel">
+  <div class="toolbar">
+   <div class="field"><label for="kingdomSelect">ACTIVE KINGDOM</label><select id="kingdomSelect"></select></div>
+   <div class="field"><label for="newKingdomName">ADD A KINGDOM</label><input id="newKingdomName" placeholder="e.g. 4115"></div>
+   <button id="addKingdomBtn">＋ Add Kingdom</button>
+  </div>
+ </section>
+ <section class="summary" id="summary"></section>
+ <section class="panel">
+  <div class="head"><div><h2>Kingdom RSS Breakdown</h2><div class="section-note">Totals across every character in the selected kingdom, after each character’s own tax and Storehouse settings.</div></div></div>
+  <div class="table-wrap" id="kingdomBreakdown"></div>
+ </section>
+ <section class="panel">
+  <div class="head"><div><h2>Character Roster</h2><div class="section-note">Each character has independent Trading Post tax and protected Storehouse settings.</div></div><button id="addCharacterBtn">＋ Add Character</button></div>
+  <div class="table-wrap" id="charactersTable"></div>
+  <div class="note">Use Edit to set each character’s total RSS, Trading Post tax %, and protected Storehouse amount for Food, Wood, Stone, and Gold. “Available” = total RSS after Trading Post tax and Storehouse protection are deducted. Characters are not limited to 10.</div>
+ </section>
+ <section class="panel">
+  <div class="head"><div><h2>How the calculation works</h2><div class="section-note">Settings are saved separately for every character.</div></div></div>
+  <div class="rss-grid"><div class="rss"><div class="rss-top">Total RSS</div><strong>100M</strong></div><div class="rss"><div class="rss-top">Trading Post Tax (20%)</div><strong>−20M</strong></div><div class="rss"><div class="rss-top">Storehouse Protected</div><strong>−2M</strong></div><div class="rss"><div class="rss-top">Available RSS</div><strong>78M</strong></div></div>
+  <div class="note">Example only. The tax is calculated on total RSS, then the character’s protected Storehouse amount is subtracted. Enter values in the same units you use in your records.</div>
+ </section>
+ <section class="panel">
+  <div class="head"><div><h2>Data & Backup</h2><span class="status" id="saveStatus">Saved on this device</span></div></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="secondary" id="exportBtn">⇩ Export Backup</button><button class="secondary" id="importBtn">⇧ Import Backup</button><button class="danger" id="resetBtn">Reset Data</button></div>
+  <input id="importFile" type="file" accept=".json,application/json" hidden>
+  <div class="note">This prototype saves in the current browser on this device. Cloud sync is not connected yet; export a backup before clearing browser data.</div>
+ </section>
+</main>
+<dialog class="dialog" id="characterDialog">
+ <form id="characterForm">
+  <h2 class="form-title" id="characterDialogTitle">Add Character</h2>
+  <div class="dialog-grid">
+   <div class="wide field"><label for="characterName">CHARACTER NAME</label><input id="characterName" required maxlength="60" placeholder="e.g. Toufeeq 3"></div>
+   <div class="field"><label for="foodInput">FOOD</label><input id="foodInput" type="number" min="0" step="any" value="0" required></div>
+   <div class="field"><label for="woodInput">WOOD</label><input id="woodInput" type="number" min="0" step="any" value="0" required></div>
+   <div class="field"><label for="stoneInput">STONE</label><input id="stoneInput" type="number" min="0" step="any" value="0" required></div>
+   <div class="field"><label for="goldInput">GOLD TOTAL RSS</label><input id="goldInput" type="number" min="0" step="any" value="0" required></div>
+   <div class="wide field"><label for="taxRateInput">TRADING POST TAX (%) — THIS CHARACTER ONLY</label><input id="taxRateInput" type="number" min="0" max="100" step="any" value="0" required><div class="small-help">Set a different percentage for each character (0–100%).</div></div>
+   <div class="wide"><h3 style="margin:6px 0 2px;color:var(--gold2);font-size:14px">Storehouse Protected Amounts</h3><div class="small-help">Enter how much of each resource is protected from being looted for this character.</div></div>
+   <div class="field"><label for="protectedFoodInput">FOOD PROTECTED</label><input id="protectedFoodInput" type="number" min="0" step="any" value="0" required></div>
+   <div class="field"><label for="protectedWoodInput">WOOD PROTECTED</label><input id="protectedWoodInput" type="number" min="0" step="any" value="0" required></div>
+   <div class="field"><label for="protectedStoneInput">STONE PROTECTED</label><input id="protectedStoneInput" type="number" min="0" step="any" value="0" required></div>
+   <div class="field"><label for="protectedGoldInput">GOLD PROTECTED</label><input id="protectedGoldInput" type="number" min="0" step="any" value="0" required></div>
+  </div>
+  <div class="dialog-actions"><button type="button" class="secondary" id="cancelCharacter">Cancel</button><button type="submit">Save Character</button></div>
+ </form>
+</dialog>
+<dialog class="dialog" id="adjustDialog">
+ <form id="adjustForm">
+  <h2 class="form-title" id="adjustTitle">Add / Minus Resources</h2>
+  <div class="dialog-grid">
+   <div class="wide field"><label for="adjustTarget">TARGET</label><select id="adjustTarget"></select></div>
+   <div class="field"><label for="adjustResource">RESOURCE</label><select id="adjustResource"><option>Food</option><option>Wood</option><option>Stone</option><option>Gold</option></select></div>
+   <div class="field"><label for="adjustMode">ACTION</label><select id="adjustMode"><option value="add">Add (+)</option><option value="minus">Minus (−)</option></select></div>
+   <div class="wide field"><label for="adjustAmount">AMOUNT</label><input id="adjustAmount" type="number" min="0.000001" step="any" required placeholder="e.g. 1000000"><div class="small-help">Use the same units as your Excel/game records.</div></div>
+  </div>
+  <div class="dialog-actions"><button type="button" class="secondary" id="cancelAdjust">Cancel</button><button type="submit">Apply Change</button></div>
+ </form>
+</dialog>
+
+<script>
+const RESOURCES=['Food','Wood','Stone','Gold'];
+let activeUser='admin';
+const ACCOUNTS_KEY='rokResourceManager_localAccounts_v1';
+function dataKey(user=activeUser){return 'rokResourceManager_greenGold_v3_user_'+String(user).toLowerCase().replace(/[^a-z0-9_-]/g,'_')}
+function readAccounts(){try{return JSON.parse(localStorage.getItem(ACCOUNTS_KEY)||'{}')}catch(e){return {}}}
+const blank=()=>({Food:0,Wood:0,Stone:0,Gold:0});
+const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36);
+function fresh(){let id=uid();return{selectedKingdom:id,kingdoms:[{id,name:'4114',characters:[],storehouse:blank()}]}}
+function load(){try{let raw=localStorage.getItem(dataKey());if(!raw&&activeUser==='admin'){raw=localStorage.getItem('rokResourceManager_greenGold_v3')||localStorage.getItem('rokResourceManager_greenGold_v2')}let x=JSON.parse(raw||'null');if(x&&Array.isArray(x.kingdoms)&&x.kingdoms.length){x.kingdoms.forEach(k=>{if(!Array.isArray(k.characters))k.characters=[];k.characters.forEach(normalizeCharacter)});if(activeUser==='admin'&&!localStorage.getItem(dataKey()))localStorage.setItem(dataKey(),JSON.stringify(x));return x}}catch(e){}return fresh()}
+let state=load(),editingId=null;
+function current(){return state.kingdoms.find(k=>k.id===state.selectedKingdom)||state.kingdoms[0]}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function fmt(n){return Number(n||0).toLocaleString(undefined,{maximumFractionDigits:3})}
+function normalizeCharacter(c){c.resources=c.resources||blank();RESOURCES.forEach(r=>{c.resources[r]=Number(c.resources[r]||0)});c.protected=c.protected||blank();RESOURCES.forEach(r=>{c.protected[r]=Number(c.protected[r]||0)});c.taxRate=Number(c.taxRate||0);return c}
+function available(c,r){c=normalizeCharacter(c);return Number(c.resources[r]||0)*(1-Number(c.taxRate||0)/100)-Number(c.protected[r]||0)}
+function sumChars(k){let t=blank();k.characters.forEach(c=>RESOURCES.forEach(r=>t[r]+=Number(c.resources[r]||0)));return t}
+function total(k){return sumChars(k)}
+function kingdomBreakdown(k){let out={};RESOURCES.forEach(r=>out[r]={total:0,tax:0,protected:0,available:0});k.characters.forEach(c=>{normalizeCharacter(c);RESOURCES.forEach(r=>{out[r].total+=c.resources[r];out[r].tax+=c.resources[r]*(c.taxRate/100);out[r].protected+=c.protected[r];out[r].available+=available(c,r)})});return out}
+function save(){try{localStorage.setItem(dataKey(),JSON.stringify(state));let status=document.getElementById('saveStatus');if(status)status.textContent='● Saved locally for '+activeUser+' · '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}catch(e){let status=document.getElementById('saveStatus');if(status)status.textContent='Could not save locally'}}
+function render(){
+ let sel=document.getElementById('kingdomSelect');sel.innerHTML=state.kingdoms.map(k=>`<option value="${k.id}">${esc(k.name)}</option>`).join('');sel.value=current().id;
+ let k=current(),t=total(k),bd=kingdomBreakdown(k);
+ document.getElementById('summary').innerHTML=[
+  ['Characters',k.characters.length,'in this kingdom'],...RESOURCES.map(r=>[`${r} Available`,fmt(bd[r].available),'after tax + Storehouse'])
+ ].map(([a,b,c])=>`<div class="metric"><div class="kicker">${a}</div><div class="number">${b}</div><div class="unit">${c}</div></div>`).join('');
+ document.getElementById('kingdomBreakdown').innerHTML=`<table><thead><tr><th>Resource</th><th>Total RSS</th><th>Trading Post Tax</th><th>Storehouse Protected</th><th>Final Available RSS</th></tr></thead><tbody>${RESOURCES.map(r=>`<tr><td><strong>${r}</strong></td><td>${fmt(bd[r].total)}</td><td>−${fmt(bd[r].tax)}</td><td>−${fmt(bd[r].protected)}</td><td><strong>${fmt(bd[r].available)}</strong></td></tr>`).join('')}</tbody></table>`;
+ let table=document.getElementById('charactersTable');
+ table.innerHTML=k.characters.length?`<table><thead><tr><th>Character</th><th>Tax %</th>${RESOURCES.map(r=>`<th>${r} Total</th><th>${r} Available</th>`).join('')}<th>Actions</th></tr></thead><tbody>${k.characters.map(c=>`<tr><td><span class="charname">${esc(c.name)}</span></td><td>${fmt(c.taxRate||0)}%</td>${RESOURCES.map(r=>`<td>${fmt(c.resources[r])}</td><td><strong>${fmt(available(c,r))}</strong></td>`).join('')}<td><div class="actions"><button class="small secondary" onclick="editCharacter('${c.id}')">Edit</button><button class="small secondary" onclick="openAdjust('${c.id}')">＋/−</button><button class="small danger" onclick="deleteCharacter('${c.id}')">Delete</button></div></td></tr>`).join('')}</tbody></table>`:`<div class="empty">Your roster is empty.<br><br><button id="emptyAddBtn">＋ Add your first character</button></div>`;
+ let emptyBtn=document.getElementById('emptyAddBtn');if(emptyBtn)emptyBtn.onclick=()=>openCharacter();
+ save();
+}
+function addKingdom(){let input=document.getElementById('newKingdomName'),name=input.value.trim();if(!name)return alert('Enter a kingdom ID or name.');if(state.kingdoms.some(k=>k.name.toLowerCase()===name.toLowerCase()))return alert('That kingdom already exists.');let k={id:uid(),name,characters:[],storehouse:blank()};state.kingdoms.push(k);state.selectedKingdom=k.id;input.value='';render()}
+function openCharacter(c=null){editingId=c?c.id:null;if(c)normalizeCharacter(c);document.getElementById('characterDialogTitle').textContent=c?'Edit Character':'Add Character';document.getElementById('characterName').value=c?c.name:'';RESOURCES.forEach(r=>{document.getElementById(r.toLowerCase()+'Input').value=c?c.resources[r]:0;document.getElementById('protected'+r+'Input').value=c?c.protected[r]:0});document.getElementById('taxRateInput').value=c?c.taxRate:0;document.getElementById('characterDialog').showModal()}
+function editCharacter(id){let c=current().characters.find(c=>c.id===id);if(c)openCharacter(c)}
+function saveCharacter(e){e.preventDefault();let name=document.getElementById('characterName').value.trim(),resources={},protectedAmounts={};RESOURCES.forEach(r=>{resources[r]=Number(document.getElementById(r.toLowerCase()+'Input').value||0);protectedAmounts[r]=Number(document.getElementById('protected'+r+'Input').value||0)});let taxRate=Number(document.getElementById('taxRateInput').value||0);if(!name||RESOURCES.some(r=>resources[r]<0||protectedAmounts[r]<0)||taxRate<0||taxRate>100)return alert('Enter a name, non-negative amounts, and tax between 0 and 100%.');if(RESOURCES.some(r=>protectedAmounts[r]>resources[r]))return alert('A protected Storehouse amount cannot be greater than that resource’s total RSS.');let k=current();if(editingId){let c=k.characters.find(c=>c.id===editingId);if(c){c.name=name;c.resources=resources;c.protected=protectedAmounts;c.taxRate=taxRate}}else k.characters.push({id:uid(),name,resources,protected:protectedAmounts,taxRate});document.getElementById('characterDialog').close();render()}
+function deleteCharacter(id){let k=current(),c=k.characters.find(c=>c.id===id);if(c&&confirm(`Delete ${c.name} and its current balances from this browser? Export a backup first if needed.`)){k.characters=k.characters.filter(x=>x.id!==id);render()}}
+function openAdjust(id=null){let k=current(),s=document.getElementById('adjustTarget');s.innerHTML=k.characters.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');if(id)s.value=id;if(!k.characters.length)return alert('Add a character first.');document.getElementById('adjustMode').value='add';document.getElementById('adjustAmount').value='';document.getElementById('adjustDialog').showModal()}
+function applyAdjust(e){e.preventDefault();let c=current().characters.find(c=>c.id===document.getElementById('adjustTarget').value),r=document.getElementById('adjustResource').value,mode=document.getElementById('adjustMode').value,a=Number(document.getElementById('adjustAmount').value);if(!c||!Number.isFinite(a)||a<=0)return alert('Choose a character and enter an amount above zero.');let n=c.resources[r]+(mode==='add'?a:-a);if(n<0)return alert('Insufficient balance. Balance cannot go below zero.');c.resources[r]=n;document.getElementById('adjustDialog').close();render()}
+function openStore(){let k=current();RESOURCES.forEach(r=>document.getElementById('store'+r).value=k.storehouse[r]);document.getElementById('storeDialog').showModal()}
+function saveStore(e){e.preventDefault();let k=current();RESOURCES.forEach(r=>k.storehouse[r]=Number(document.getElementById('store'+r).value||0));document.getElementById('storeDialog').close();render()}
+function exportBackup(){let b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='rok-resource-manager-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+document.getElementById('kingdomSelect').onchange=e=>{state.selectedKingdom=e.target.value;render()};
+document.getElementById('addKingdomBtn').onclick=addKingdom;document.getElementById('addCharacterBtn').onclick=()=>openCharacter();
+document.getElementById('characterForm').onsubmit=saveCharacter;document.getElementById('cancelCharacter').onclick=()=>document.getElementById('characterDialog').close();
+document.getElementById('adjustForm').onsubmit=applyAdjust;document.getElementById('cancelAdjust').onclick=()=>document.getElementById('adjustDialog').close();
+
+document.getElementById('exportBtn').onclick=exportBackup;document.getElementById('importBtn').onclick=()=>document.getElementById('importFile').click();
+document.getElementById('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let x=JSON.parse(await f.text());if(!x||!Array.isArray(x.kingdoms)||!x.kingdoms.length||!x.kingdoms.every(k=>k.name&&Array.isArray(k.characters)))throw Error();if(confirm('Import will replace current local data. Continue?')){state=x;state.kingdoms.forEach(k=>k.characters.forEach(normalizeCharacter));if(!state.kingdoms.some(k=>k.id===state.selectedKingdom))state.selectedKingdom=state.kingdoms[0].id;render();alert('Backup imported.')}}catch(err){alert('Invalid backup file.')}e.target.value=''};
+document.getElementById('resetBtn').onclick=()=>{if(confirm('Reset all local data? Export a backup first if needed.')){state=fresh();render()}};
+let authMode='login';
+function setAuthMode(mode){authMode=mode;const reg=mode==='register';document.getElementById('authTitle').textContent=reg?'Create Fellow Account':'Login';document.getElementById('authSubtitle').textContent=reg?'Create a local account. Your data will be separate from other usernames on this browser.':'Sign in to open your own saved kingdoms and characters.';document.getElementById('authSubmitBtn').textContent=reg?'Create Account':'Login';document.getElementById('confirmPasswordField').hidden=!reg;document.getElementById('authPassword').autocomplete=reg?'new-password':'current-password';document.getElementById('showLoginBtn').classList.toggle('active',!reg);document.getElementById('showRegisterBtn').classList.toggle('active',reg);document.getElementById('authMessage').textContent='';}
+function enterApp(username){activeUser=username;state=load();editingId=null;document.body.classList.add('logged-in');document.getElementById('signedInLabel').textContent='Signed in as '+username;document.getElementById('authPassword').value='';document.getElementById('authConfirmPassword').value='';render();}
+document.getElementById('showLoginBtn').onclick=()=>setAuthMode('login');
+document.getElementById('showRegisterBtn').onclick=()=>setAuthMode('register');
+document.getElementById('authForm').onsubmit=e=>{e.preventDefault();const username=document.getElementById('authUsername').value.trim(),password=document.getElementById('authPassword').value,confirmPassword=document.getElementById('authConfirmPassword').value,msg=document.getElementById('authMessage');if(!/^[a-zA-Z0-9_-]{3,30}$/.test(username)){msg.textContent='Username must be 3–30 letters, numbers, _ or -.';return}if(authMode==='register'){if(username.toLowerCase()==='admin'){msg.textContent='The username admin is reserved.';return}if(password.length<4){msg.textContent='Password must be at least 4 characters.';return}if(password!==confirmPassword){msg.textContent='Passwords do not match.';return}const accounts=readAccounts(),key=username.toLowerCase();if(accounts[key]){msg.textContent='That username already exists on this browser.';return}accounts[key]={username,password};localStorage.setItem(ACCOUNTS_KEY,JSON.stringify(accounts));enterApp(username);return}if(username.toLowerCase()==='admin'&&password==='12345'){enterApp('admin');return}const account=readAccounts()[username.toLowerCase()];if(account&&account.password===password){enterApp(account.username);return}msg.textContent='Incorrect username or password. Create an account first if you are a fellow.';};
+document.getElementById('logoutBtn').onclick=()=>{save();document.body.classList.remove('logged-in');setAuthMode('login');document.getElementById('authUsername').value='';document.getElementById('authPassword').value='';};
+// Start on the login screen. No account's dashboard is shown until they sign in.
+</script>
+</body>
+</html>
